@@ -46,3 +46,11 @@ next-env.d.ts
 #testing
 test_supabase.js
 test_swr.js
+
+# PWA autogenerados
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/fallback-*.js
+public/fallback-*.js.map

@@ -1,6 +1,14 @@
+import withPWAPlugin from "@ducanh2912/next-pwa";
+
+const withPWA = withPWAPlugin({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development", // Evita problemas de caché programando en local
+  register: true,
+  skipWaiting: true,
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -14,4 +22,5 @@ const nextConfig = {
   reactCompiler: true,
 };
 
-export default nextConfig;
+// Envolvemos tu configuración original con el plugin de la PWA
+export default withPWA(nextConfig);

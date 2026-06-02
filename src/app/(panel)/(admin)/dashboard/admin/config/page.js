@@ -133,29 +133,29 @@ export default function ConfigPage() {
 
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pb-20">
-      <header className="border-b border-gray-800 bg-[#111111] sticky top-0 z-50">
+    <div className="min-h-screen bg-white text-gray-900 font-sans pb-20">
+      <header className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="max-w-[1280px] mx-auto px-4 lg:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="size-8 bg-blue-600 rounded flex items-center justify-center shadow-lg shadow-blue-900/40">
+            <div className="size-8 bg-secundary rounded-lg flex items-center justify-center shadow-sm">
               <span className="material-symbols-outlined text-white text-sm">settings</span>
             </div>
-            <h2 className="text-lg font-black tracking-tighter uppercase italic">
-              Royal<span className="text-red-600">Super</span> Config
+            <h2 className="text-lg font-black tracking-tighter uppercase italic text-gray-900">
+              Royal<span className="text-fourth">Super</span> Config
             </h2>
           </div>
-          <Link href="/dashboard/admin" className="text-xs font-bold uppercase hover:text-red-500 transition-colors">Volver</Link>
+          <Link href="/dashboard/admin" className="text-xs font-bold uppercase text-black hover:text-secundary transition-colors">Volver</Link>
         </div>
       </header>
 
-      <main className="max-w-[1280px] mx-auto py-8 px-4 lg:px-10">
+      <div className="max-w-[1280px] mx-auto py-8 px-4 lg:px-10 bg-gray-300 rounded-lg">
         {/* TABS SELECTOR */}
-        <div className="flex flex-wrap gap-2 mb-8 bg-[#111111] p-1 rounded-xl border border-gray-800">
+        <div className="flex flex-wrap gap-2 mb-8 bg-gray-50 p-1 rounded-xl border border-gray-200">
           {['pagos', 'zonas', 'tasa'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase italic transition-all flex items-center justify-center gap-2 ${activeTab === tab ? 'bg-red-600 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-800'}`}
+              className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase italic transition-all flex items-center justify-center gap-2 ${activeTab === tab ? 'bg-secundary text-white shadow-md' : 'text-gray-400 hover:bg-gray-100'}`}
             >
               {tab === 'pagos' ? 'Métodos de Pago' : tab === 'zonas' ? 'Zonas' : 'Tasa del día'}
             </button>
@@ -167,19 +167,19 @@ export default function ConfigPage() {
           {activeTab === 'pagos' && (
             <div className="animate-in fade-in duration-500">
               <div className="flex justify-between items-end mb-6">
-                <h3 className="text-2xl font-black uppercase italic">Pagos</h3>
-                <button onClick={() => { setEditingMethod(null); setIsModalOpen(true); }} className="bg-white text-black px-4 py-2 rounded font-black text-[10px] uppercase italic">Agregar Nuevo</button>
+                <h3 className="text-2xl font-black uppercase italic text-gray-900">Pagos</h3>
+                <button onClick={() => { setEditingMethod(null); setIsModalOpen(true); }} className="bg-secundary text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase italic hover:bg-blue-700 transition-colors">Agregar Nuevo</button>
               </div>
               <div className="grid gap-4">
                 {methods.map((m) => (
-                  <div key={m.id} className="p-4 bg-[#111111] border border-gray-800 rounded-xl flex justify-between items-center group">
+                  <div key={m.id} className="p-4 bg-gray-50 border border-gray-200 rounded-xl flex justify-between items-center group hover:border-gray-300 transition-colors">
                     <div className="text-left">
-                      <p className="font-bold text-sm italic uppercase">{m.banco} ({m.moneda})</p>
-                      <p className="text-xs text-gray-500">{m.detalles.dato || m.detalles.cuenta || m.detalles.correo}</p>
+                      <p className="font-bold text-sm italic uppercase text-gray-900">{m.banco} ({m.moneda})</p>
+                      <p className="text-xs text-gray-400">{m.detalles.dato || m.detalles.cuenta || m.detalles.correo}</p>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={() => { setEditingMethod(m); setIsModalOpen(true); }} className="p-2 hover:text-blue-500"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteMethod(m.id)} className="p-2 hover:text-red-500"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => { setEditingMethod(m); setIsModalOpen(true); }} className="p-2 text-gray-400 hover:text-secundary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteMethod(m.id)} className="p-2 text-gray-400 hover:text-fourth transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -190,20 +190,20 @@ export default function ConfigPage() {
           {activeTab === 'zonas' && (
             <div className="animate-in fade-in duration-500">
               <div className="flex justify-between items-end mb-6">
-                <h3 className="text-2xl font-black uppercase italic">Zonas y Vendedores</h3>
-                <button onClick={() => { setEditingZona(null); setIsZonaModalOpen(true); }} className="bg-white text-black px-4 py-2 rounded font-black text-[10px] uppercase italic">Nueva Zona</button>
+                <h3 className="text-2xl font-black uppercase italic text-gray-900">Zonas y Vendedores</h3>
+                <button onClick={() => { setEditingZona(null); setIsZonaModalOpen(true); }} className="bg-secundary text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase italic hover:bg-blue-700 transition-colors">Nueva Zona</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {zonas.map(z => (
-                  <div key={z.id} className="p-5 bg-[#111111] border border-gray-800 rounded-2xl flex justify-between items-center">
+                  <div key={z.id} className="p-5 bg-gray-50 border border-gray-200 rounded-2xl flex justify-between items-center hover:border-gray-300 transition-colors">
                     <div className="text-left">
-                      <h4 className="font-black text-sm uppercase italic text-red-600">{z.nombre}</h4>
+                      <h4 className="font-black text-sm uppercase italic text-tertiary">{z.nombre}</h4>
                       <p className="text-[10px] text-gray-400 uppercase font-bold">{z.sector}</p>
-                      <p className="text-[9px] text-blue-400 font-black mt-2">VENDEDOR: {z.vendedor_nombre || 'POR ASIGNAR'}</p>
+                      <p className="text-[9px] text-secundary font-black mt-2">VENDEDOR: {z.vendedor_nombre || 'POR ASIGNAR'}</p>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={() => { setEditingZona(z); setIsZonaModalOpen(true); }} className="p-2 hover:bg-gray-800 rounded"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => deleteZona(z.id)} className="p-2 hover:text-red-500"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => { setEditingZona(z); setIsZonaModalOpen(true); }} className="p-2 text-gray-400 hover:text-secundary hover:bg-gray-100 rounded transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => deleteZona(z.id)} className="p-2 text-gray-400 hover:text-fourth transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -212,34 +212,34 @@ export default function ConfigPage() {
           )}
 
           {activeTab === 'tasa' && (
-            <div className="max-w-md bg-[#111111] p-8 rounded-2xl border border-gray-800 shadow-2xl mx-auto text-center">
-              <label className="block text-[10px] font-black text-gray-500 uppercase mb-4 tracking-widest">Tasa BCV Actual</label>
-              <div className="text-5xl font-black italic text-red-600 mb-6">{tasaActual} <span className="text-xs text-gray-500">VES</span></div>
-              <input type="number" value={tempTasa} onChange={(e) => setTempTasa(e.target.value)} className="w-full bg-black border border-gray-800 rounded-xl px-5 py-4 text-2xl font-mono text-center outline-none focus:border-red-600 mb-4" />
-              <button onClick={updateTasa} className="w-full bg-red-600 py-4 rounded-xl font-black uppercase italic hover:bg-red-700 transition-all">Actualizar para toda la App</button>
+            <div className="max-w-md bg-gray-50 p-8 rounded-2xl border border-gray-200 shadow-sm mx-auto text-center">
+              <label className="block text-[10px] font-black text-gray-400 uppercase mb-4 tracking-widest">Tasa BCV Actual</label>
+              <div className="text-5xl font-black italic text-secundary mb-6">{tasaActual} <span className="text-xs text-gray-400">VES</span></div>
+              <input type="number" value={tempTasa} onChange={(e) => setTempTasa(e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-5 py-4 text-2xl font-mono text-center text-gray-900 outline-none focus:border-secundary mb-4" />
+              <button onClick={updateTasa} className="w-full bg-secundary text-white py-4 rounded-xl font-black uppercase italic hover:bg-blue-700 transition-all">Actualizar para toda la App</button>
             </div>
           )}
         </div>
-      </main>
+      </div>
 
       {/* MODAL ZONAS */}
       {isZonaModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-          <div className="bg-[#111111] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-5">
-            <h3 className="font-black uppercase italic text-lg">{editingZona ? 'Editar Zona' : 'Nueva Zona'}</h3>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-sm p-6 space-y-5 shadow-2xl">
+            <h3 className="font-black uppercase italic text-lg text-gray-900">{editingZona ? 'Editar Zona' : 'Nueva Zona'}</h3>
 
             <form onSubmit={handleSaveZona} className="space-y-4 text-left">
               <div>
-                <label className="text-[10px] font-black text-gray-500 uppercase">Nombre (Ciudad/Eje)</label>
-                <input name="nombre" defaultValue={editingZona?.nombre} placeholder="Ej: VALENCIA" className="w-full bg-black border border-gray-800 rounded-xl p-3 text-sm" required />
+                <label className="text-[10px] font-black text-gray-400 uppercase">Nombre (Ciudad/Eje)</label>
+                <input name="nombre" defaultValue={editingZona?.nombre} placeholder="Ej: VALENCIA" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-900 outline-none focus:border-secundary" required />
               </div>
 
               <div>
-                <label className="text-[10px] font-black text-gray-500 uppercase">Vendedor Responsable</label>
+                <label className="text-[10px] font-black text-gray-400 uppercase">Vendedor Responsable</label>
                 <select
                   name="vendedor_nombre" // Nombre exacto de la columna
                   defaultValue={editingZona?.vendedor_nombre || ""}
-                  className="w-full bg-black border border-gray-800 rounded-xl p-3 text-sm"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-900 outline-none focus:border-secundary"
                   required
                 >
                   <option value="" disabled>Seleccionar...</option>
@@ -252,12 +252,12 @@ export default function ConfigPage() {
               </div>
 
               <div>
-                <label className="text-[10px] font-black text-gray-500 uppercase">Sectores Abarcados</label>
-                <textarea name="sector" defaultValue={editingZona?.sector} placeholder="Ej: Naguanagua, San Diego..." className="w-full bg-black border border-gray-800 rounded-xl p-3 text-sm h-20" required />
+                <label className="text-[10px] font-black text-gray-400 uppercase">Sectores Abarcados</label>
+                <textarea name="sector" defaultValue={editingZona?.sector} placeholder="Ej: Naguanagua, San Diego..." className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-900 h-20 outline-none focus:border-secundary" required />
               </div>
               <div className="flex gap-2">
-                <button type="button" onClick={() => setIsZonaModalOpen(false)} className="flex-1 py-3 bg-gray-800 rounded-xl font-bold text-xs uppercase">Cancelar</button>
-                <button type="submit" className="flex-[2] py-3 bg-red-600 rounded-xl font-black text-xs uppercase italic">Guardar Zona</button>
+                <button type="button" onClick={() => setIsZonaModalOpen(false)} className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold text-xs uppercase hover:bg-gray-200 transition-colors">Cancelar</button>
+                <button type="submit" className="flex-[2] py-3 bg-secundary text-white rounded-xl font-black text-xs uppercase italic hover:bg-blue-700 transition-colors">Guardar Zona</button>
               </div>
             </form>
           </div>

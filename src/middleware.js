@@ -47,13 +47,13 @@ export async function middleware(request) {
     let target = '/dashboard/vendedor' // Por defecto
     if (rol === 'admin') target = '/dashboard/admin'
     else if (rol === 'cliente') target = '/dashboard/cliente'
-    
+
     return NextResponse.redirect(new URL(target, request.url))
   }
 
   // C. PROTECCIÓN DE RUTAS POR ROL (Solo si está en /dashboard)
   if (user && pathname.startsWith('/dashboard')) {
-    
+
     // Protección para ADMIN
     if (pathname.startsWith('/dashboard/admin') && rol !== 'admin') {
       const target = rol === 'cliente' ? '/dashboard/cliente' : '/dashboard/vendedor'
@@ -79,8 +79,15 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     /*
-     * Coincide con todas las rutas excepto archivos estáticos y API
+     * Coincide con todas las rutas de solicitud excepto las que empiezan por:
+     * - api (rutas de API)
+     * - _next/static (archivos estáticos de Next.js)
+     * - _next/image (optimización de imágenes)
+     * - favicon.ico (icono)
+     * - manifest.json (PWA)
+     * - sw.js, workbox-*.js (Archivos del Service Worker de la PWA)
+     * - icons/ (Carpeta de iconos de la app)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|sw.js|workbox-.*\\.js|icons/).*)',
   ],
-}
+};

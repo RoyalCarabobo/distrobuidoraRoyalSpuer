@@ -39,38 +39,41 @@ export default function AdminClientsPage() {
   );
 
   if (loading) return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
-      <div className="text-blue-500 animate-pulse font-black uppercase tracking-widest">
-        Sincronizando Cartera de Aliados...
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-4 border-secundary border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-secundary animate-pulse font-black uppercase tracking-widest text-xs">
+          Sincronizando Cartera de Aliados...
+        </p>
       </div>
     </div>
   );
 
 
   return (
-    <main className="min-h-screen bg-[#0f0f0f] text-white p-6 md:p-10 font-['Manrope']">
+    <main className="min-h-screen bg-white text-gray-900 p-6 md:p-10 font-['Manrope']">
 
       {/* Encabezado Profesional */}
       <div className="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h1 className="text-4xl font-black uppercase italic tracking-tighter">
-            Red de <span className="text-blue-500">Aliados</span>
+          <h1 className="text-4xl font-black uppercase italic tracking-tighter text-gray-900">
+            Red de <span className="text-secundary">Aliados</span>
           </h1>
-          <p className="text-gray-500 text-sm font-bold uppercase tracking-widest mt-2">Control de Distribución y Puntos de Venta</p>
+          <p className="text-gray-400 text-sm font-bold uppercase tracking-widest mt-2">Control de Distribución y Puntos de Venta</p>
         </div>
 
-        <Link href="/dashboard/admin/clients/new" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs transition-all shadow-lg shadow-blue-900/20">
+        <Link href="/dashboard/admin/clients/new" className="bg-secundary hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs transition-all shadow-sm">
           + Registrar Aliado
         </Link>
       </div>
 
       {/* Filtros de Estado */}
-      <div className="max-w-7xl mx-auto mb-6 flex gap-2 p-1 bg-[#1a1a1a] w-fit rounded-2xl border border-gray-800">
+      <div className="max-w-7xl mx-auto mb-6 flex gap-2 p-1 bg-gray-300 w-fit rounded-2xl border border-black">
         {['todos', 'pendiente', 'habilitado', 'deshabilitado'].map((tab) => (
           <button
             key={tab}
             onClick={() => setFilter(tab)}
-            className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all ${filter === tab ? 'bg-blue-600 text-white' : 'text-gray-500'
+            className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all ${filter === tab ? 'bg-secundary text-white shadow-md' : 'text-black hover:bg-gray-100'
               }`}
           >
             {tab === 'habilitado' ? 'Activos' : tab}
@@ -79,87 +82,88 @@ export default function AdminClientsPage() {
       </div>
 
       {/* Sección de Estadísticas Rápidas */}
-      <div className="max-w-7xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="max-w-7xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-3 p-3 gap-4  rounded-2xl border border-gray-200">
 
-        <div className="bg-[#1a1a1a] border border-gray-800 p-6 rounded-[2rem] shadow-xl">
-          <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Total Cartera</p>
+        <div className="bg-blue-50 border border-blue-300 p-6 rounded-2xl shadow-sm">
+          <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Total Cartera</p>
           <div className="flex justify-between items-end">
-            <h2 className="text-3xl font-black italic">{totalAliados}</h2>
-            <span className="text-blue-500 material-symbols-outlined text-3xl">groups</span>
+            <h2 className="text-3xl font-black italic text-gray-900">{totalAliados}</h2>
+            <span className="text-secundary material-symbols-outlined text-3xl">groups</span>
           </div>
         </div>
 
-        <div className="bg-[#1a1a1a] border border-gray-800 p-6 rounded-[2rem] shadow-xl border-l-green-500/30">
-          <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Aliados Activos</p>
+        <div className="bg-green-50 border border-green-300 p-6 rounded-2xl shadow-sm">
+          <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Aliados Activos</p>
           <div className="flex justify-between items-end">
-            <h2 className="text-3xl font-black italic text-green-500">{aprobados}</h2>
-            <span className="text-green-500/50 material-symbols-outlined text-3xl">verified</span>
+            <h2 className="text-3xl font-black italic text-green-600">{aprobados}</h2>
+            <span className="text-green-400 material-symbols-outlined text-3xl">verified</span>
           </div>
         </div>
 
-        <div className="bg-[#1a1a1a] border border-gray-800 p-6 rounded-[2rem] shadow-xl border-l-orange-500/30">
-          <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Por Validar</p>
+        <div className="bg-orange-50 border border-orange-300 p-6 rounded-2xl shadow-sm">
+          <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Por Validar</p>
           <div className="flex justify-between items-end">
-            <h2 className="text-3xl font-black italic text-orange-500">{pendientes}</h2>
-            <span className="text-orange-500/50 material-symbols-outlined text-3xl">pending_actions</span>
+            <h2 className="text-3xl font-black italic text-orange-600">{pendientes}</h2>
+            <span className="text-orange-400 material-symbols-outlined text-3xl">pending_actions</span>
           </div>
         </div>
 
       </div>
 
       {/* Tabla de Inteligencia Comercial */}
-      <div className="max-w-7xl mx-auto bg-[#1a1a1a] border border-gray-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
+      <div className="max-w-7xl mx-auto bg-blue-100 border border-black rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
+
             <thead>
-              <tr className="bg-[#222] border-b border-gray-800">
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500">Aliado Comercial</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500">RIF</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500">Contacto</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500">Estado</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500 text-right">Vendedor</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase text-gray-500 text-right">Gestión</th>
+              <tr className="bg-gray-50 border-b border-black">
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black">Aliado Comercial</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black">RIF</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black">Contacto</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black">Estado</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black text-right">Vendedor</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-black text-right">Gestión</th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-gray-800/50">
+            <tbody className="divide-y divide-gray-500">
               {filteredClients.map((client) => (
-                <tr key={client.id} className="hover:bg-blue-500/5 transition-colors group">
+                <tr key={client.id} className="hover:bg-blue-50/50 transition-colors group">
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-xl bg-[#0f0f0f] border border-gray-800 overflow-hidden">
-                        <img src={client.foto_fachada_url || '/placeholder-store.jpg'} className="w-full h-full object-cover opacity-80" />
+                      <div className="size-12 rounded-xl bg-gray-100 border border-gray-200 overflow-hidden">
+                        <img src={client.foto_fachada_url || '/placeholder-store.jpg'} className="w-full h-full object-cover" />
                       </div>
                       <div>
-                        <p className="font-bold text-sm text-white">{client.razon_social}</p>
-                        <p className="text-[10px] text-gray-500 truncate max-w-[200px] uppercase">{client.direccion}</p>
+                        <p className="font-bold text-sm text-gray-900">{client.razon_social}</p>
+                        <p className="text-[12px] text-gray-900 truncate max-w-[200px] uppercase">{client.direccion}</p>
                       </div>
                     </div>
 
                   </td>
-                  <td className="px-8 py-6 text-xs font-mono text-blue-400">{client.rif}</td>
+                  <td className="px-8 py-6 text-xs font-mono text-secundary">{client.rif}</td>
                   <td className="px-8 py-6 text-xs">
-                    <p className="text-gray-300 font-bold">{client.encargado}</p>
-                    <p className="text-gray-500 text-[10px]">{client.telefono}</p>
+                    <p className="text-gray-700 font-bold">{client.encargado}</p>
+                    <p className="text-gray-900 text-[12px]">{client.telefono}</p>
                   </td>
 
                   <td className="px-8 py-6">
                     <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${client.status === 'habilitado' // Antes decía 'aprobado'
-                        ? 'bg-green-500/10 text-green-500 border-green-500/20'
-                        : 'bg-orange-500/10 text-orange-500 border-orange-500/20'
+                      ? 'bg-green-50 text-green-600 border-green-200'
+                      : 'bg-orange-50 text-orange-600 border-orange-200'
                       }`}>
                       {client.status === 'habilitado' ? 'Activo' : client.status}
                     </span>
                   </td>
 
-                  <td className="px-8 py-6 text-xs font-bold text-blue-400 text-right">
+                  <td className="px-8 py-6 text-xs font-bold text-secundary text-right">
                     {client.vendedor?.nombre_completo || 'Sin asignar'}
                   </td>
 
                   <td className="px-8 py-6 text-right">
                     <div className="flex justify-end gap-2">
                       <Link href={`/dashboard/admin/clientsAdmin/${client.id}`}>
-                        <button className="p-2 bg-[#0f0f0f] border border-gray-800 rounded-lg text-gray-500 hover:text-white transition-all">
+                        <button className="p-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-400 hover:text-secundary hover:border-secundary transition-all">
                           <span className="material-symbols-outlined text-sm">visibility</span>
                         </button>
                       </Link>
@@ -172,7 +176,7 @@ export default function AdminClientsPage() {
           </table>
 
           {filteredClients.length === 0 && (
-            <div className="p-20 text-center text-gray-600 uppercase font-bold text-xs">
+            <div className="p-20 text-center text-gray-400 uppercase font-bold text-xs">
               No se encontraron aliados con este estado
             </div>
           )}

@@ -80,61 +80,61 @@ export default function SalesChart() {
         })).sort((a, b) => parseInt(a.day.split(' ')[1]) - parseInt(b.day.split(' ')[1]));
 
         const comparisonData = [
-            { name: 'Periodo Anterior', ventas: stats.prevSales, fill: '#374151' },
-            { name: 'Periodo Actual', ventas: stats.currentSales, fill: '#2563eb' }
+            { name: 'Periodo Anterior', ventas: stats.prevSales, fill: '#d1d5db' },
+            { name: 'Periodo Actual', ventas: stats.currentSales, fill: '#0d25ff' }
         ];
 
         return { daily: dailyData, comparison: comparisonData, totals: stats };
     };
 
-    if (loading) return <div className="h-[400px] w-full bg-[#1a1a1a] animate-pulse rounded-[2.5rem]" />;
+    if (loading) return <div className="h-[400px] w-full bg-gray-50 animate-pulse rounded-2xl" />;
 
     return (
         <div className="space-y-6">
             {/* Filtros */}
-            <div className="bg-[#1a1a1a] p-6 rounded-[2rem] border border-gray-800 flex flex-wrap gap-4 items-center justify-between">
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex flex-wrap gap-4 items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+                    <div className="p-2 bg-blue-50 rounded-lg text-secundary">
                         <Calendar size={20} />
                     </div>
-                    <h3 className="font-black uppercase italic text-sm text-white">Rango de Análisis</h3>
+                    <h3 className="font-black uppercase italic text-sm text-gray-900">Rango de Análisis</h3>
                 </div>
                 <div className="flex gap-2">
                     <input
                         type="date"
                         value={dateRange.start}
                         onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                        className="bg-black border border-gray-700 rounded-xl px-4 py-2 text-xs font-bold text-white outline-none focus:border-blue-500"
+                        className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-gray-900 outline-none focus:border-secundary"
                     />
                     <input
                         type="date"
                         value={dateRange.end}
                         onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                        className="bg-black border border-gray-700 rounded-xl px-4 py-2 text-xs font-bold text-white outline-none focus:border-blue-500"
+                        className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-gray-900 outline-none focus:border-secundary"
                     />
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Gráfica 1: Comparativa de Ventas Totales */}
-                <div className="bg-[#1a1a1a] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
                     <div className="mb-6">
-                        <div className="flex items-center gap-2 text-blue-500 mb-1">
+                        <div className="flex items-center gap-2 text-secundary mb-1">
                             <TrendingUp size={16} />
                             <span className="text-[10px] font-black uppercase tracking-widest">Performance de Ventas</span>
                         </div>
-                        <h2 className="text-xl font-black italic uppercase text-white">Vs. Mes Anterior</h2>
+                        <h2 className="text-xl font-black italic uppercase text-gray-900">Vs. Mes Anterior</h2>
                     </div>
 
                     <div className="h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={data.comparison} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                                <XAxis dataKey="name" fontSize={10} fontWeight="bold" axisLine={false} tickLine={false} stroke="#6b7280" />
-                                <YAxis fontSize={10} axisLine={false} tickLine={false} stroke="#6b7280" tickFormatter={(v) => `$${v}`} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
+                                <XAxis dataKey="name" fontSize={10} fontWeight="bold" axisLine={false} tickLine={false} stroke="#9ca3af" />
+                                <YAxis fontSize={10} axisLine={false} tickLine={false} stroke="#9ca3af" tickFormatter={(v) => `$${v}`} />
                                 <Tooltip
-                                    cursor={{ fill: 'transparent' }}
-                                    contentStyle={{ backgroundColor: '#141414', border: '1px solid #374151', borderRadius: '12px' }}
+                                    cursor={{ fill: 'rgba(0,0,0,0.03)' }}
+                                    contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                 />
                                 <Bar dataKey="ventas" radius={[10, 10, 0, 0]} barSize={60} />
                             </BarChart>
@@ -143,13 +143,13 @@ export default function SalesChart() {
                 </div>
 
                 {/* Gráfica 2: Pedidos Diarios (Área) */}
-                <div className="bg-[#1a1a1a] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
                     <div className="mb-6">
-                        <div className="flex items-center gap-2 text-emerald-500 mb-1">
+                        <div className="flex items-center gap-2 text-emerald-600 mb-1">
                             <ShoppingCart size={16} />
                             <span className="text-[10px] font-black uppercase tracking-widest">Volumen de Operaciones</span>
                         </div>
-                        <h2 className="text-xl font-black italic uppercase text-white">Pedidos Diarios</h2>
+                        <h2 className="text-xl font-black italic uppercase text-gray-900">Pedidos Diarios</h2>
                     </div>
 
                     <div className="h-[250px] w-full">
@@ -157,15 +157,15 @@ export default function SalesChart() {
                             <AreaChart data={data.daily} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
                                         <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                                <XAxis dataKey="day" fontSize={9} axisLine={false} tickLine={false} stroke="#6b7280" />
-                                <YAxis fontSize={10} axisLine={false} tickLine={false} stroke="#6b7280" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
+                                <XAxis dataKey="day" fontSize={9} axisLine={false} tickLine={false} stroke="#9ca3af" />
+                                <YAxis fontSize={10} axisLine={false} tickLine={false} stroke="#9ca3af" />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: '#141414', border: '1px solid #374151', borderRadius: '12px' }}
+                                    contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                 />
                                 <Area
                                     type="monotone"
