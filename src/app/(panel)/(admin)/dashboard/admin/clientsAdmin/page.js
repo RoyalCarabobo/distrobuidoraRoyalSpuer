@@ -148,7 +148,7 @@ export default function AdminClientsPage() {
                   </td>
 
                   <td className="px-8 py-6">
-                    <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${client.status === 'habilitado' // Antes decía 'aprobado'
+                    <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase border ${client.status === 'habilitado'
                       ? 'bg-green-50 text-green-600 border-green-200'
                       : 'bg-orange-50 text-orange-600 border-orange-200'
                       }`}>

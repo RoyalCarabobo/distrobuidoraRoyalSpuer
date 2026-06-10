@@ -17,6 +17,17 @@ export const ClientService = {
         return data;
     },
 
+    async getById(id) {
+        const { data, error } = await supabase
+            .from('clientes')
+            .select(`*, vendedor:vendedor_id (nombre_completo)`)
+            .eq('id', id)
+            .single(); // Trae un único registro
+
+        if (error) throw error;
+        return data;
+    },
+
     async getMyClients() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error("No hay sesión activa");

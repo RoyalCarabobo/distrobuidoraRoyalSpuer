@@ -33,7 +33,7 @@ export async function middleware(request) {
   const rol = user?.user_metadata?.rol
 
   // DEBUG: Esto aparecerá en tu terminal de VS Code
-  console.log(`🛡️ Middleware: [${pathname}] | Usuario: ${user?.email || 'No logueado'} | Rol: ${rol || 'Sin rol'}`);
+  console.log(` Middleware: [${pathname}] | Usuario: ${user?.email || 'No logueado'} | Rol: ${rol || 'Sin rol'}`);
 
   // --- LÓGICA DE REDIRECCIONES ---
 

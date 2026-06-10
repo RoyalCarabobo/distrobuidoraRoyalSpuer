@@ -16,7 +16,7 @@ const StatCard = ({ label, value, icon: Icon, color, bg, description, trend, onC
   >
     {/* Decoración de fondo al hacer hover */}
     <div className={`absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity ${color}`}>
-        <Icon size={120} />
+      <Icon size={120} />
     </div>
 
     <div className="flex justify-between items-start mb-4 relative z-10">
@@ -54,6 +54,22 @@ const StatCard = ({ label, value, icon: Icon, color, bg, description, trend, onC
 );
 
 export default function VentasStatsGrid({ data, onCardClick }) {
+
+  if (!data) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="bg-[#1a1a1a] p-6 h-[180px] rounded-[2.5rem] border border-gray-800 animate-pulse flex flex-col justify-between">
+            <div className="size-12 bg-gray-800 rounded-2xl"></div>
+            <div className="space-y-2">
+              <div className="h-3 bg-gray-800 rounded w-1/2"></div>
+              <div className="h-8 bg-gray-800 rounded w-3/4"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
   const statsConfig = [
     {
       label: 'Pedidos Totales',
@@ -96,7 +112,7 @@ export default function VentasStatsGrid({ data, onCardClick }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {statsConfig.map((stat, index) => (
-        <StatCard key={index} {...stat} onClick={onCardClick}/>
+        <StatCard key={index} {...stat} onClick={onCardClick} />
       ))}
     </div>
   );

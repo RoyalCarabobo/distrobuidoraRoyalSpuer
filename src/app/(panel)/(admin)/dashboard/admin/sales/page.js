@@ -2,9 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import {
-    Users, ArrowUpRight, Target, Edit2
-} from 'lucide-react';
+import { Users, ArrowUpRight, Target, Edit2 } from 'lucide-react';
 import Link from 'next/link';
 import VentasStatsGrid from '@/components/VentasStatsGrid';
 import KpiDetailView from '@/components/KpiDetailView';
@@ -15,8 +13,10 @@ export default function VendedorVentasDashboard() {
     const [currentKpi, setCurrentKpi] = useState(null);
     const [user, setUser] = useState(null);
     const [isEditingMeta, setIsEditingMeta] = useState(false);
-    const [metaMensual, setMetaMensual] = useState(5000);
     const router = useRouter();
+
+    const META_MENSUAL_GENERAL = 5000;
+    const [metaMensual, setMetaMensual] = useState(META_MENSUAL_GENERAL);
 
     const [stats, setStats] = useState({
         totalVendidoMes: 0,
@@ -31,17 +31,17 @@ export default function VendedorVentasDashboard() {
         setLoading(true);
         try {
             const now = new Date();
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) return router.push('/login');
 
             const authUser = session.user;
             setUser(authUser);
 
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
             const { data: pedidos, error } = await supabase
                 .from('pedidos')
-                .select(`*, clientes (razon_social, rif)`)
+                .select(`*, clientes!cliente_id (razon_social, rif)`)
                 .gte('fecha_pedido', firstDay)
                 .order('fecha_pedido', { ascending: false });
 
@@ -121,12 +121,12 @@ export default function VendedorVentasDashboard() {
 
                     {/* WIDGET DE META Y CLIENTES */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-                        <div className="lg:col-span-2 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                        <div className="lg:col-span-2 bg-primary border-foreground p-8 rounded-2xl border shadow-sm">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-[10px] font-black uppercase text-gray-400 flex items-center gap-2 tracking-widest">
-                                    <Target size={14} className="text-black" /> Mi Objetivo Comercial
+                                <span className="text-[10px] font-black uppercase text-white flex items-center gap-2 tracking-widest">
+                                    <Target size={14} className="text-foreground" /> Mi Objetivo Comercial
                                 </span>
-                                <button onClick={() => setIsEditingMeta(!isEditingMeta)} className="text-black hover:text-gray-600 transition-colors">
+                                <button onClick={() => setIsEditingMeta(!isEditingMeta)} className="cursor-pointer text-white hover:text-foreground transition-colors">
                                     <Edit2 size={14} />
                                 </button>
                             </div>
@@ -155,9 +155,9 @@ export default function VendedorVentasDashboard() {
                                             style={{ width: `${Math.min((stats.totalVendidoMes / metaMensual) * 100, 100)}%` }}
                                         ></div>
                                     </div>
-                                    <p className="text-3xl font-black italic leading-none text-gray-900">
+                                    <p className="text-3xl font-black italic leading-none text-foreground">
                                         ${stats.totalVendidoMes.toLocaleString()}
-                                        <span className="text-gray-400 text-sm font-bold not-italic ml-2 uppercase"> / ${Number(metaMensual).toLocaleString()} meta</span>
+                                        <span className="text-white text-sm font-bold not-italic ml-2 uppercase"> / ${Number(metaMensual).toLocaleString()} meta</span>
                                     </p>
                                 </>
                             )}
@@ -174,12 +174,6 @@ export default function VendedorVentasDashboard() {
                             </p>
                         </Link>
                     </div>
-
-                    <VentasStatsGrid
-                        data={stats}
-                        onCardClick={(label) => setCurrentKpi(label)}
-                    />
-
                     {/* TABLA DE MOVIMIENTOS */}
                     <div className="mt-10 bg-gary-300 rounded-2xl border border overflow-hidden shadow-sm">
                         <div className="p-8 border-b border-gray-100 flex justify-between items-center">

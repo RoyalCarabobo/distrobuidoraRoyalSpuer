@@ -2,38 +2,36 @@
 import { useEffect, useState } from 'react';
 import { StatsServices } from '@/services/stats';
 import Link from 'next/link';
-import {
-  TrendingUp,
-  Clock,
-  AlertTriangle,
-  Users,
-  UserPlus,
-  ChevronRight,
-  Download
-} from 'lucide-react';
+import { TrendingUp, Clock, AlertTriangle, Users, UserPlus } from 'lucide-react';
 import OrderDetailModal from '@/components/modal/OrderDetailModal';
 import SalesChart from '@/components/SalesChart';
 import ReportFilterModal from '@/components/modal/ReportFilterModal';
+import VentasStatsGrid from '@/components/VentasStatsGrid';
+import KpiDetailView from '@/components/KpiDetailView';
 
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   const [recentOrders, setRecentOrders] = useState([]);
-
-  const [sellerPerformance, setSellerPerformance] = useState([]);
-
-  const [stats, setStats] = useState({
-    totalVentas: 0,
-    pedidosPendientes: 0,
-    stockBajo: 0,
-    vendedoresActivos: 0,
-    clientesPendientes: 0
-  });
+  const [currentKpi, setCurrentKpi] = useState(null);
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  const [sellerPerformance, setSellerPerformance] = useState([]);
+
+  const [stats, setStats] = useState({
+    totalVendidoMes: 0,
+    totalPedidos: 0,
+    porConfirmar: 0,
+    porCobrar: 0,
+    morosos: 0,
+    pedidos: []
+  });
+
+
 
   useEffect(() => {
     async function fetchAllData() {
@@ -50,11 +48,13 @@ export default function AdminDashboard() {
         ]);
 
         setStats({
-          totalVentas: total.count || 0,
-          pedidosPendientes: pending.count || 0,
-          stockBajo: stock.count || 0,
-          vendedoresActivos: sellers.count || 0,
-          clientesPendientes: pendingClients.count || 0,
+          totalPedidos: total.count || 0,     // Corregido para que coincida con lo que el Grid busca
+          porConfirmar: pending.count || 0,   // Corregido
+          porCobrar: 0,                       // Si tienes un servicio para esto, agrégalo aquí, ej: cobros.count || 0
+          morosos: 0,                         // Si tienes un servicio para esto, ej: morosos.count || 0
+          trendPedidos: 12,                   // Valores estáticos temporales o dinámicos para los trends si los tienes
+          trendCobros: null,
+          trendMorosos: null
         });
 
         const orders = ordersData.data || [];
@@ -103,33 +103,10 @@ export default function AdminDashboard() {
     );
   }
 
-  function StatCard({ title, value, color, icon: Icon }) {
-    const colors = {
-      blue: { text: 'text-black', bg: 'bg-blue-700', border: 'border-black', iconBg: 'bg-blue-100' },
-      orange: { text: 'text-orange-600', bg: 'bg-orange-400', border: 'border-black', iconBg: 'bg-orange-100' },
-      red: { text: 'text-red-600', bg: 'bg-red-600', border: 'border-black', iconBg: 'bg-red-100' },
-      green: { text: 'text-green-600', bg: 'bg-green-600', border: 'border-black', iconBg: 'bg-green-100' },
-      yellow: { text: 'text-amber-600', bg: 'bg-amber-600', border: 'border-black', iconBg: 'bg-amber-100' }
-    };
-    const c = colors[color];
-    return (
-      <div className={`p-6 rounded-2xl border ${c.border} ${c.bg} shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5`}>
-        <div className="flex justify-between items-start mb-4">
-          <div className={`p-3 rounded-xl ${c.iconBg} ${c.text}`}>
-            <Icon size={22} />
-          </div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-black">Live</span>
-        </div>
-        <p className="text-xs font-bold text-black uppercase tracking-tight">{title}</p>
-        <h4 className="text-3xl font-black text-gray-900 italic mt-1">{value}</h4>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-4 md:p-10 max-w-7xl mx-auto space-y-10 bg-white/70 min-h-screen">
+    <div className="p-4 md:p-10 max-w-10xl mx-auto space-y-10 bg-white/70 min-h-screen">
       {/* Header */}
-      <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <header className="flex flex-col justify-between gap-6">
         <div>
           <h1 className="text-3xl md:text-4xl font-black text-gray-900 italic uppercase tracking-tighter leading-none">
             Panel <span className="text-secundary">Administrativo</span>
@@ -137,7 +114,7 @@ export default function AdminDashboard() {
           <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em] mt-3">Control Global Royal Super Oil</p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap  justify-end gap-3">
 
           <button className="bg-amber-500 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-amber-600 transition-all shadow-sm" onClick={() => setIsReportModalOpen(true)}>Imprimir Reporte Mensual</button>
 
@@ -149,16 +126,8 @@ export default function AdminDashboard() {
             Ver Pedidos
           </Link>
         </div>
+        <VentasStatsGrid data={stats} />
       </header>
-
-      {/* Grid de KPIs - Ajustado para Móvil */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
-        <StatCard title="Total Ventas" value={stats.totalVentas} color="blue" icon={TrendingUp} />
-        <StatCard title="Por Aprobar" value={stats.pedidosPendientes} color="orange" icon={Clock} />
-        <StatCard title="Stock Bajo" value={stats.stockBajo} color="red" icon={AlertTriangle} />
-        <StatCard title="Vendedores" value={stats.vendedoresActivos} color="green" icon={Users} />
-        <StatCard title="Nuevos Aliados" value={stats.clientesPendientes} color="yellow" icon={UserPlus} />
-      </div>
 
       {/* Gráfica de Ventas */}
       <div className="bg-gray-400 rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">

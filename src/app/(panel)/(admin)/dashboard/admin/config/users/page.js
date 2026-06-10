@@ -7,7 +7,7 @@ export default function UserManagementPage() {
   const [usuarios, setUsers] = useState([]); // 'usuarios' es tu estado local de la tabla profiles
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
 
   // 1. Cargar desde Supabase al montar el componente
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function UserManagementPage() {
     u.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 lg:p-10">
+    <div className="min-h-screen bg-white text-white p-4 lg:p-10">
       {/* Header de Sección */}
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">

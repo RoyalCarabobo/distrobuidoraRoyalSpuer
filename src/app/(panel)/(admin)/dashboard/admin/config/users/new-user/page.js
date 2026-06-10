@@ -1,45 +1,32 @@
 'use client'
 import { useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
+import { UserService } from '@/services/user'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('') // Nuevo: Nombre
-  const [phone, setPhone] = useState('')       // Nuevo: Teléfono
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
   const [role, setRole] = useState('vendedor')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+
   const handleRegister = async (e) => {
     e.preventDefault()
     setLoading(true)
-    const supabase = createClient()
+    try {
+      await UserService.createUserByAdmin({ email, password, fullName, phone, role })
 
-    // Enviamos TODO en user_metadata para que el Trigger lo reciba
-    const { error } = await supabase.auth.signUp({ 
-      email, 
-      password, 
-      options: { 
-         data: { 
-          role: role,
-          full_name: fullName,
-          nombre_completo: fullName, 
-          telefono: phone,
-          correo: email,
-          rol:role
-        } 
-      } 
-    })
-
-    if (error) {
-      alert("Error: " + error.message)
-      setLoading(false)
-    } else {
       alert("Usuario registrado exitosamente en el sistema.")
       router.push('/dashboard/admin/config/users')
       router.refresh()
+    } catch (error) {
+      // Capturamos cualquier fallo de restricción o de red sin tumbar la vista
+      alert("Error en el registro: " + error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -49,42 +36,42 @@ export default function RegisterPage() {
         <h2 className="text-3xl font-black italic uppercase text-white mb-6 text-center">
           Nuevo <span className="text-red-600">Staff</span>
         </h2>
-        
+
         <form onSubmit={handleRegister} className="space-y-4">
           {/* Nombre*/}
           <div className="group">
-            <input 
+            <input
               required
-              type="text" 
-              placeholder="Nombre y Apellido" 
+              type="text"
+              placeholder="Nombre y Apellido"
               className="w-full bg-black border border-gray-800 p-4 rounded-xl text-white focus:border-blue-600 outline-none transition-all"
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
 
           {/* Email */}
-          <input 
+          <input
             required
-            type="email" 
-            placeholder="Correo" 
+            type="email"
+            placeholder="Correo"
             className="w-full bg-black border border-gray-800 p-4 rounded-xl text-white focus:border-blue-600 outline-none transition-all"
             onChange={(e) => setEmail(e.target.value)}
           />
 
           {/* Teléfono */}
-          <input 
+          <input
             required
-            type="tel" 
-            placeholder="0424123456" 
+            type="tel"
+            placeholder="0424123456"
             className="w-full bg-black border border-gray-800 p-4 rounded-xl text-white focus:border-blue-600 outline-none transition-all"
             onChange={(e) => setPhone(e.target.value)}
           />
 
           {/* Password */}
-          <input 
+          <input
             required
-            type="password" 
-            placeholder="Contraseña" 
+            type="password"
+            placeholder="Contraseña"
             className="w-full bg-black border border-gray-800 p-4 rounded-xl text-white focus:border-blue-600 outline-none transition-all"
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -92,7 +79,7 @@ export default function RegisterPage() {
           {/* Cargo */}
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase text-gray-500 ml-2 tracking-widest">Cargo Asignado</label>
-            <select 
+            <select
               className="w-full bg-black border border-gray-800 p-4 rounded-xl text-white focus:border-blue-600 outline-none uppercase font-bold text-sm cursor-pointer"
               onChange={(e) => setRole(e.target.value)}
               value={role}
@@ -101,8 +88,8 @@ export default function RegisterPage() {
               <option value="admin">Administrador General</option>
             </select>
           </div>
-          
-          <button 
+
+          <button
             disabled={loading}
             className={`w-full ${loading ? 'bg-gray-700' : 'bg-blue-600 hover:bg-blue-700'} text-white font-black py-4 rounded-xl transition-all uppercase italic flex items-center justify-center gap-2 mt-4 shadow-lg shadow-blue-900/20`}
           >
